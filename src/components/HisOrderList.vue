@@ -7,44 +7,22 @@
           <code-input />
         </el-col>
         <div style="float:left;margin-left: 10px">
-          <el-date-picker 
-            size="small"
-            type="date"
-            v-model="query.startDate" 
-            placeholder="选择日期"
-            value-format="yyyyMMdd"
-          ></el-date-picker>
+          <el-date-picker size="small" type="date" v-model="query.startDate" placeholder="选择日期" value-format="yyyyMMdd"></el-date-picker>
           -
-          <el-date-picker 
-            size="small"
-            type="date"
-            v-model="query.endDate" 
-            placeholder="选择日期"
-            value-format="yyyyMMdd"
-          ></el-date-picker>
+          <el-date-picker size="small" type="date" v-model="query.endDate" placeholder="选择日期" value-format="yyyyMMdd"></el-date-picker>
         </div>
 
-        <el-button 
-          style="float:left;margin-left: 10px;"
-          size="small"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleSearch"></el-button>
+        <el-button style="float:left;margin-left: 10px;" size="small" type="primary" icon="el-icon-search" @click="handleSearch"></el-button>
 
       </el-row>
 
     </div>
 
     <!---->
-    <el-table 
-      :data="tableData.slice(
+    <el-table :data="tableData.slice(
         (query.currentPage-1)*query.pageSize,
         query.currentPage*query.pageSize
-      )"
-      border
-      :cell-style="cellStyle"
-      @sort-change="changeTableSort"
-      :default-sort="{prop:'time',order:'descending'}">
+      )" border :cell-style="cellStyle" @sort-change="changeTableSort" :default-sort="{prop:'time',order:'descending'}">
       <!--委托时间 股票代码 名称 委托价格 委托数量 方向 状态-->
       <el-table-column label="委托时间" prop="time" align="center" sortable />
       <el-table-column label="股票代码" prop="code" align="center" />
@@ -57,17 +35,11 @@
 
     <!---->
     <div class="pagination">
-        <el-button round type="primary" size="mini" style="margin-top:2px;float:right;" icon="el-icon-refresh" @click="">
-            刷新
-          </el-button>
-          <el-pagination
-            layout="total,prev,pager,next"
-            :current-page="query.currentPage"
-            :page-size="query.pageSize"
-            :total="4"
-            background
-            @current-change="handlePageChange"
-          />
+      <el-button round type="primary" size="mini" style="margin-top:2px;float:right;" icon="el-icon-refresh" @click="">
+        刷新
+      </el-button>
+      <el-pagination layout="total,prev,pager,next" :current-page="query.currentPage" :page-size="query.pageSize" :total="4" background
+        @current-change="handlePageChange" />
     </div>
 
 
@@ -77,14 +49,14 @@
 <script>
   import CodeInput from '../components/CodeInput.vue';
 
-  export default{
-    name:'HisOrderList',
+  export default {
+    name: 'HisOrderList',
     components: {
       CodeInput,
     },
-    data(){
-      return{
-        tableData:[
+    data() {
+      return {
+        tableData: [
           {
             time: '09:55:00',
             code: '000001',
@@ -122,50 +94,50 @@
             status: 3
           }
         ],
-        query:{
-          currentPage:1,
-          pageSize:3,
-          code:'',
-          startDate:'',
-          endDate:'',
+        query: {
+          currentPage: 1,
+          pageSize: 3,
+          code: '',
+          startDate: '',
+          endDate: '',
         }
       }
     },
-    methods:{
-      handlePageChange(val){
-        this.$set(this.query,'currentPage',val);
+    methods: {
+      handlePageChange(val) {
+        this.$set(this.query, 'currentPage', val);
       },
-      updatedSelectedCode(item){
+      updatedSelectedCode(item) {
         this.query.code = item.code;
       },
-      handleSearch(){
+      handleSearch() {
 
       },
-      cellStyle({row,column,rowIndex,columnIndex}){
+      cellStyle({ row, column, rowIndex, columnIndex }) {
         return "padding:2px;";
       },
-      changeTableSort(column){
+      changeTableSort(column) {
         let fieldName = column.prop;
         let sortingType = column.order;
-        if(fieldName === 'time'){
-          if(sortingType == "descending"){
-            this.tableData = this.tableData.sort((a, b)=>{
-              if(a[fieldName] < b[fieldName]){
+        if (fieldName === 'time') {
+          if (sortingType == "descending") {
+            this.tableData = this.tableData.sort((a, b) => {
+              if (a[fieldName] < b[fieldName]) {
                 return 1;
-              }else if(a[fieldName] === b[fieldName]){
+              } else if (a[fieldName] === b[fieldName]) {
                 return 0;
-              }else{
+              } else {
                 return -1;
               }
             })
-          }else{
+          } else {
             this.tableData = this.tableData.sort(
               (a, b) => {
-                if(a[fieldName] > b[fieldName]){
+                if (a[fieldName] > b[fieldName]) {
                   return 1;
-                }else if(a[fieldName] === b[fieldName]){
+                } else if (a[fieldName] === b[fieldName]) {
                   return 0;
-                }else{
+                } else {
                   return -1;
                 }
               }
@@ -174,11 +146,11 @@
         }
       }
     },
-    created () {
-      this.$bus.on("codeinput-selected",this.updatedSelectedCode)
+    created() {
+      this.$bus.on("codeinput-selected", this.updatedSelectedCode)
     },
-    beforeDestroy () {
-      this.$bus.off("codeinput-selected",this.updatedSelectedCode)
+    beforeDestroy() {
+      this.$bus.off("codeinput-selected", this.updatedSelectedCode)
     }
 
   }

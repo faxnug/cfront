@@ -1,5 +1,6 @@
 <template>
   <div class="sidebar">
+    <!-- 控制 el-menu 展开或者收缩的变量是 :collapse -->
     <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157" text-color="#bfcbd9"
       active-text-color="#20a0ff" unique-opened router>
       <template v-for="item in items">
@@ -37,66 +38,64 @@
     name: "Sidebar",
     data() {
       return {
-        collapse: false,
+        collapse: false,                    //  默认 siderbar 不收缩
         items: [{
-            icon: 'el-icon-pie-chart',
-            index: 'dashboard',
-            title: '资金股份'
+          icon: 'el-icon-pie-chart',
+          index: 'dashboard',
+          title: '资金股份'
+        },
+        {
+          icon: 'el-icon-s-order',
+          index: 'buy',
+          title: '买入'
+        },
+        {
+          icon: 'el-icon-sell',
+          index: 'sell',
+          title: '卖出'
+        },
+        {
+          icon: 'el-icon-search',
+          index: '3',
+          title: '查询',
+          subs: [{
+            index: 'orderquery',
+            title: '当日委托'
           },
           {
-            icon: 'el-icon-s-order',
-            index: 'buy',
-            title: '买入'
+            index: 'tradequery',
+            title: '当日成交'
           },
           {
-            icon: 'el-icon-sell',
-            index: 'sell',
-            title: '卖出'
+            index: 'hisorderquery',
+            title: '历史委托'
           },
           {
-            icon: 'el-icon-search',
-            index: '3',
-            title: '查询',
-            subs: [{
-                index: 'orderquery',
-                title: '当日委托'
-              },
-              {
-                index: 'tradequery',
-                title: '当日成交'
-              },
-              {
-                index: 'hisorderquery',
-                title: '历史委托'
-              },
-              {
-                index: 'histradequery',
-                title: '历史成交'
-              },
-            ]
+            index: 'histradequery',
+            title: '历史成交'
           },
+          ]
+        },
 
-          {
-            icon: 'el-icon-bank-card',
-            index: '4',
-            title: '银证业务',
-            subs: [{
-                index: 'transfer',
-                title: '银证转账'
-              },
-              {
-                index: 'transferquery',
-                title: '转账查询'
-              },
-            ]
+        {
+          icon: 'el-icon-bank-card',
+          index: '4',
+          title: '银证业务',
+          subs: [{
+            index: 'transfer',
+            title: '银证转账'
           },
           {
-            icon: 'el-icon-setting',
-            index: 'pwdsetting',
-            title: '修改密码'
+            index: 'transferquery',
+            title: '转账查询'
           },
-
-
+          ]
+        },
+        {
+          icon: 'el-icon-setting',
+          index: 'pwdsetting',
+          title: '修改密码'
+        },
         ]
       };
     },
@@ -105,14 +104,17 @@
         return this.$route.path.replace('/', '');
       }
     },
-    methods:{
-      collapseChange(msg){
+    methods: {
+      // 伸缩事件
+      collapseChange(msg) {
         this.collapse = msg;
         this.$bus.emit('collapse-content', msg);
       }
     },
+    // created 和 beforeDestroy 总是成对出现，必须要同时实现 on 和 off 方法
     created() {
       // 通过 Event Bus 进行组件间通信，来折叠侧边栏
+      // 这里的 collapse 是 Home 父组件中 data 里面定义的 collapse
       this.$bus.on('collapse', msg => {
         this.collapseChange(msg);
       });
@@ -123,6 +125,7 @@
       });
     }
   };
+
 </script>
 
 <style lang="scss">

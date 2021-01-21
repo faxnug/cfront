@@ -26,19 +26,19 @@
         </div>
         <div class="orderBook">
             <el-row v-for="item in buy" :key="item.name">
-                <!-- 档位名称 -->
-                <el-col :span="6">{{item.name}}</el-col>
-                <!-- 价格 -->
-                <el-col :span="6">{{item.price | filterempty}}</el-col>
-                <!-- 长度 -->
-                <el-col :span="6">
-                  <div class="volumeratio">
-                    <div class="buy" v-bind:style="{width:item.width+'%'}" />
-                  </div>
-                </el-col>
-                <!-- 量 -->
-                <el-col :span="6">{{item.volume | filterempty}}</el-col>
-              </el-row>
+              <!-- 档位名称 -->
+              <el-col :span="6">{{item.name}}</el-col>
+              <!-- 价格 -->
+              <el-col :span="6">{{item.price | filterempty}}</el-col>
+              <!-- 长度 -->
+              <el-col :span="6">
+                <div class="volumeratio">
+                  <div class="buy" v-bind:style="{width:item.width+'%'}" />
+                </div>
+              </el-col>
+              <!-- 量 -->
+              <el-col :span="6">{{item.volume | filterempty}}</el-col>
+            </el-row>
         </div>
       </el-form-item>
     </el-form>
