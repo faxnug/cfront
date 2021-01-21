@@ -10,13 +10,18 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue')
+  },
+  {
     path: '/',
     component: ()=>import('../views/Home.vue'),
     children:[
         {
-            path: '/dashboard',
-            name:'Dashboard',
-            component: ()=>import('../views/Dashboard.vue'),
+          path: '/dashboard',
+          name:'Dashboard',
+          component: ()=>import('../views/Dashboard.vue'),
         },
         {
           path: '/pwdsetting',
@@ -47,12 +52,18 @@ const routes = [
           name:'Buy',
           component: ()=>import('../views/Buy.vue'),
           meta:{requiredAuth:false}
+        },
+        {
+          path: '/sell',
+          name:'Sell',
+          component: ()=>import('../views/Sell.vue'),
+          meta:{requiredAuth:false}
         }
     ]
   },
   {
       path:'/404',
-      name:'/404',
+      name:'404',
       component: ()=>import('../views/404.vue'),
   },
   {
