@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="crumbs">
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item>
-            <i class="el-icon-pie-chart"></i> 资金股份
-          </el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>
+          <i class="el-icon-pie-chart"></i> 资金股份
+        </el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
 
-      <el-card class="container">
-        <posi-list />
-      </el-card>
+    <el-card class="container">
+      <posi-list />
+    </el-card>
   </div>
 </template>
 
@@ -18,7 +18,7 @@
   import PosiList from "../components/PosiList.vue";
   export default {
     name: 'Dashboard',
-    components:{
+    components: {
       PosiList,
     }
   }

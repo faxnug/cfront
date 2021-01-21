@@ -15,7 +15,7 @@
       <el-row>
         <!--委托组件-->
         <el-col :span="12">
-          <order-widget :direction="0" />
+          <order-widget :direction="1" />
         </el-col>
         <!--订单簿组件-->
         <el-col :span="12">

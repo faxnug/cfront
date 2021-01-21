@@ -1,12 +1,15 @@
 <template>
   <div class="login-wrap">
     <el-form class="login-container" :model="ruleForm" :rules="rules" ref="ruleForm">
-      <h3 class="title">用户登录</h3>
+      <h3 class="title">用户注册</h3>
       <el-form-item prop="uid">
         <el-input v-model="ruleForm.uid" type="text" placeholder="账号" />
       </el-form-item>
       <el-form-item prop="password">
         <el-input v-model="ruleForm.password" type="password" placeholder="密码" />
+      </el-form-item>
+      <el-form-item prop="confirmpassword">
+        <el-input v-model="ruleForm.confirmpassword" type="password" placeholder="再次输入密码" />
       </el-form-item>
       <el-row>
         <el-col :span="12">
@@ -19,122 +22,115 @@
         </el-col>
       </el-row>
       <el-form-item>
-        <el-button type="primary" style="width: 100%" :loading="logining" @click="submitForm('ruleForm')">
-          登录
-        </el-button>
+        <el-col :span="12" style="padding-left: 25%">
+          <el-button type="primary" :loading="logining" @click="submitRegister('ruleForm')">
+            注册
+          </el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button type="danger" @click="cancelRegister">
+            取消
+          </el-button>
+        </el-col>
       </el-form-item>
-      <el-link type="danger" :underline="false" @click="toRegister">立即注册<i class="el-icon-d-arrow-right el-icon--right"></i></el-link>
     </el-form>
   </div>
 </template>
 
 <script>
-  import { queryCaptcha, login } from '../api/loginApi.js';
-  import encryptMD5  from 'js-md5';
+  import { queryCaptcha, register } from '../api/loginApi.js';
+  import encryptMD5 from 'js-md5';
 
   export default {
-    name: "Login",
-    data(){
-      return{
+    name: "Register",
+    data() {
+      return {
         //提交表单
-        ruleForm:{
-          uid:'',
-          password:'',
-          captcha:'',
-          captchaId:'',
+        ruleForm: {
+          uid: '',
+          password: '',
+          confirmpassword: '',
+          captcha: '',
+          captchaId: '',
         },
         //验证码图片
-        codeImg:'',
+        codeImg: '',
         //限制规则
-        rules:{
-          uid:[{required:true,message:'请输入账号',trigger:'blur'}],
-          password:[{required:true,message:'请输入密码',trigger:'blur'}],
-          captcha:[{required:true,message:'请输入验证码',trigger:'blur'}],
+        rules: {
+          uid: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+          password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+          confirmpassword: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+          captcha: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
         },
         //防止前端重复提交
-        logining:false,
+        logining: false,
       }
     },
     //页面创建的时候需要执行的函数
-    created () {
-      //判断是否是注销之后返回
-      if(Boolean(this.$route.query.msg)){
-        this.$message.info(this.$route.query.msg + "");
-      }
-
+    created() {
       //获取验证码
       this.getCode();
     },
     methods: {
-      //
-      toRegister(){
-        this.$router.push({path:'/register'});
-      },
-
-      //
-      loginCallback(code,msg,acc){
-        //
-        if(code == 2){
-          //
-          this.$message.error(msg);
-          this.logining = false;
-          this.getCode();
-        }else{
-          //
-          sessionStorage.setItem("uid",acc.uid);
-          sessionStorage.setItem("token", acc.token);
-          if(acc.lastLoginDate.length > 1){
-            this.$message.success("登录成功，上次登录时间："+ acc.lastLoginDate + "" + acc.lastLoginTime);
-          }else{
-            //
-            this.$message.success("登录成功");
-          }
-
-          //
-          setTimeout(()=>{
-            this.logining = false;
-            this.$router.push({path:'/dashboard'});
-          }, 1000)
-        }
-      },
-
       //验证码回调函数
-      captchaCallback(code,msg,captchaData){
+      captchaCallback(code, msg, captchaData) {
         this.ruleForm.captchaId = captchaData.id;
         this.codeImg = captchaData.imageBase64;
       },
 
       //common.js(网络交互) <-- logic.js(业务逻辑) <-- vue
       //获取验证码
-      getCode(){
+      getCode() {
         queryCaptcha(this.captchaCallback);
       },
 
       //提交表单
-      submitForm(formName){
+      submitRegister(formName) {
         //
         this.$refs[formName].validate(valid => {
-          if(valid){
-            login({
+          if (valid) {
+            register({
               uid: this.ruleForm.uid,
               password: encryptMD5(this.ruleForm.password),
               captcha: this.ruleForm.captcha,
               captchaId: this.ruleForm.captchaId,
-            }, this.loginCallback);
-          }else{
+            }, this.registerCallback);
+          } else {
             this.$message.error('用户名/密码/验证码不能为空');
-            this.logining =false;
+            this.logining = false;
           }
         })
-      }
+      },
+
+      //注册回调函数
+      registerCallback(code, msg) {
+        //
+        if (code == 2) {
+          //
+          this.$message.error(msg);
+          this.logining = false;
+          this.getCode();
+        } else {
+          this.$message.success("注册成功");
+          //
+          setTimeout(() => {
+            this.logining = false;
+            this.$router.push({ path: '/' });
+          }, 2000);
+        }
+      },
+
+      //取消注册函数
+      cancelRegister() {
+        this.$router.push({ path: '/' });
+      },
     }
   }
-
 </script>
 
 <style scoped>
   .register {
-    color:#409EFF;
+    color: #409EFF;
     font-size: 80%;
   }
 

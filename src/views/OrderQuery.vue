@@ -22,7 +22,7 @@
 
   export default {
     name: 'OrderQuery',
-    components:{
+    components: {
       OrderList,
     }
   }

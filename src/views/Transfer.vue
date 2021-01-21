@@ -25,7 +25,7 @@
           </el-form-item>
           <el-form-item label="选择币种">
             <el-select style="width: 100%" v-model="moneytype">
-              <el-option v-for="item in form.moneytype" :key= "item.id" :label="item.name" :value="item.id" />
+              <el-option v-for="item in form.moneytype" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="金额">
@@ -44,18 +44,18 @@
   export default {
     name: "Transfer",
     data() {
-        return {
-            form: {
-                bank: [{id: 0, name: '招商银行'}, {id: 1, name: '建设银行'}, {id: 2, name: '工商银行'}],
-                type: [{id: 0, name: '银行转证券(转入)'}, {id: 1, name: '证券转银行(转出)'}],
-                moneytype: [{id:0,name:'人民币'},{id:1,name:'美元'}],
-                money: 0,
-                password: '',
-            },
-            bank: '招商银行',
-            type: 0,
-            moneytype: 0,
-        };
+      return {
+        form: {
+          bank: [{ id: 0, name: '招商银行' }, { id: 1, name: '建设银行' }, { id: 2, name: '工商银行' }],
+          type: [{ id: 0, name: '银行转证券(转入)' }, { id: 1, name: '证券转银行(转出)' }],
+          moneytype: [{ id: 0, name: '人民币' }, { id: 1, name: '美元' }],
+          money: 0,
+          password: '',
+        },
+        bank: '招商银行',
+        type: 0,
+        moneytype: 0,
+      };
     },
 
   }
