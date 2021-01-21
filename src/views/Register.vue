@@ -77,13 +77,11 @@
         this.ruleForm.captchaId = captchaData.id;
         this.codeImg = captchaData.imageBase64;
       },
-
       //common.js(网络交互) <-- logic.js(业务逻辑) <-- vue
       //获取验证码
       getCode() {
         queryCaptcha(this.captchaCallback);
       },
-
       //提交表单
       submitRegister(formName) {
         //
@@ -101,7 +99,6 @@
           }
         })
       },
-
       //注册回调函数
       registerCallback(code, msg) {
         //
@@ -112,6 +109,7 @@
           this.getCode();
         } else {
           this.$message.success("注册成功");
+          console.log("1111");
           //
           setTimeout(() => {
             this.logining = false;
